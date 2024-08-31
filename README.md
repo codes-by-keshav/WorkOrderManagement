@@ -1,4 +1,4 @@
-# SIH 2024 Blockchain Project
+# Work Order Management Project
 
 This project is a blockchain-based system for managing work orders, certificates, and auctions. It consists of a Go backend and a React frontend.
 
