@@ -33,7 +33,7 @@ function ViewAuction() {
     <div className="max-w-2xl mx-auto p-6">
       <Header />
       <h2 className="text-2xl font-bold text-primary mb-6 text-center">View Auction</h2>
-      
+
       <form onSubmit={handleSubmit} className="mb-6">
         <input
           type="text"
@@ -43,13 +43,16 @@ function ViewAuction() {
           className="w-full px-3 py-2 border rounded mb-4"
           required
         />
-        <button
-          type="submit"
-          className="w-full px-4 py-2 rounded bg-primary hover:bg-secondary text-white"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Fetching...' : 'View Auction'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="w-48 px-4 py-2 rounded bg-primary hover:bg-secondary text-white flex items-center justify-center"
+            disabled={isLoading}
+          >
+            <img src={`${process.env.PUBLIC_URL}/img/visibility-white.png`} alt="View" className="w-5 h-5 mr-2" />
+            {isLoading ? 'Fetching...' : 'View Auction'}
+          </button>
+        </div>
       </form>
 
       {error && <div className="text-center mt-4 text-red-500">{error}</div>}
@@ -95,12 +98,15 @@ function ViewAuction() {
         </div>
       )}
 
-      <button
-        onClick={handleBackToDashboard}
-        className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Admin Dashboard
-      </button>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
     </div>
   );
 }

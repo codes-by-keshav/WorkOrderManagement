@@ -17,6 +17,8 @@ import ViewAuctionVendor from './components/ViewAuctionVendor';
 import ParticipateAuction from './components/ParticipateAuction';
 
 
+
+
 const ProtectedRoute = ({ isAllowed, redirectPath = '/login', children }) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
@@ -28,34 +30,57 @@ const ProtectedRoute = ({ isAllowed, redirectPath = '/login', children }) => {
 //   setUser(null);
 // };
 
+
+
 function App() {
   const [user, setUser] = useState(null);
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Routes>
-          <Route path="/" element={<Home setUser={setUser} />} />
-          <Route path="/verify" element={<VerifyDocument />} />
-          <Route path="/admin/login" element={<Login role="admin" setUser={setUser} />} />
-          <Route path="/vendor/login" element={<Login role="vendor" setUser={setUser} />} />
-          <Route element={<ProtectedRoute isAllowed={!!user} />}>
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/add-work-order" element={<AddWorkOrder />} />
-            <Route path="/admin/view-work-orders" element={<ViewWorkOrders />} />
-            <Route path="/admin/add-certificate" element={<AddCertificate />} />
-            <Route path="/admin/view-blockchain" element={<ViewBlockchain />} />
-            <Route path="/admin/start-auction" element={<StartAuction />} />
-            <Route path="/admin/view-auction" element={<ViewAuction />} />
-            <Route path="/admin/approve-work-order" element={<ApproveWorkOrder />} />
-            <Route path="/vendor" element={<VendorDashboard />} />
-            <Route path="/vendor/view-auction" element={<ViewAuctionVendor />} />
-            <Route path="/vendor/participate-auction" element={<ParticipateAuction />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App" style={{
+      position: 'relative',
+      minHeight: '100vh',
+    }}>
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundImage: `url(${process.env.PUBLIC_URL}/img/bg.jpg)`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        opacity: 0.12,
+        zIndex: -1,
+      }}/>
+      <Router>
+      <div className="min-h-screen relative">
+
+          <div className="relative">
+            <Routes>
+              <Route path="/" element={<Home setUser={setUser} />} />
+              <Route path="/verify" element={<VerifyDocument />} />
+              <Route path="/admin/login" element={<Login role="admin" setUser={setUser} />} />
+              <Route path="/vendor/login" element={<Login role="vendor" setUser={setUser} />} />
+              <Route element={<ProtectedRoute isAllowed={!!user} />}>
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/add-work-order" element={<AddWorkOrder />} />
+                <Route path="/admin/view-work-orders" element={<ViewWorkOrders />} />
+                <Route path="/admin/add-certificate" element={<AddCertificate />} />
+                <Route path="/admin/view-blockchain" element={<ViewBlockchain />} />
+                <Route path="/admin/start-auction" element={<StartAuction />} />
+                <Route path="/admin/view-auction" element={<ViewAuction />} />
+                <Route path="/admin/approve-work-order" element={<ApproveWorkOrder />} />
+                <Route path="/vendor" element={<VendorDashboard />} />
+                <Route path="/vendor/view-auction" element={<ViewAuctionVendor />} />
+                <Route path="/vendor/participate-auction" element={<ParticipateAuction />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </div>
   );
 }
 

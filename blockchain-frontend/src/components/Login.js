@@ -11,7 +11,7 @@ const sampleUsers = {
   ]
 };
 
-function Login({ role,setUser }) {
+function Login({ role, setUser }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -46,9 +46,14 @@ function Login({ role,setUser }) {
         className="w-full px-3 py-2 border rounded"
       />
       {error && <p className="text-red-500">{error}</p>}
-      <button type="submit" className="w-full bg-primary text-white px-4 py-2 rounded hover:bg-secondary">
-        Login
-      </button>
+      <div className="flex justify-center">
+        <button type="submit" className="w-32 bg-primary text-white px-4 py-2 rounded flex items-center justify-center">
+          <img src={`${process.env.PUBLIC_URL}/img/login.png`} alt="Login" className="w-5 h-5 mr-2" />
+          Login
+        </button>
+      </div>
+
+
     </form>
   );
 }

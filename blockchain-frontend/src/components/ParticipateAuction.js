@@ -35,7 +35,7 @@ function ParticipateAuction() {
       setIsLoading(false);
     }
   };
-  
+
 
   const handleBackToDashboard = () => {
     navigate('/vendor');
@@ -45,7 +45,7 @@ function ParticipateAuction() {
     <div className="max-w-2xl mx-auto p-6">
       <Header />
       <h2 className="text-2xl font-bold text-primary mb-6 text-center">Participate in Auction</h2>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -64,13 +64,16 @@ function ParticipateAuction() {
           required
           step="0.01"
         />
-        <button
-          type="submit"
-          className={`w-full px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white`}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Placing Bid...' : 'Place Bid'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className={`w-48 px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white flex items-center justify-center`}
+            disabled={isLoading}
+          >
+            <img src={`${process.env.PUBLIC_URL}/img/bidding.png`} alt="Place Bid" className="w-5 h-5 mr-2" />
+            {isLoading ? 'Placing Bid...' : 'Place Bid'}
+          </button>
+        </div>
       </form>
 
       {message && (
@@ -85,12 +88,15 @@ function ParticipateAuction() {
         </div>
       )}
 
-      <button
-        onClick={handleBackToDashboard}
-        className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Dashboard
-      </button>
+      <div className="flex justify-center mt-6 mb-6">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
     </div>
   );
 }

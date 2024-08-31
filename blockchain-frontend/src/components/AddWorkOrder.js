@@ -3,14 +3,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 
-
-
 function AddWorkOrder() {
   const navigate = useNavigate();
 
   const handleBackToDashboard = () => {
     navigate('/admin');
   };
+
   const [workOrder, setWorkOrder] = useState({
     Issuer: '',
     Department: '',
@@ -19,10 +18,11 @@ function AddWorkOrder() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [addedWorkOrderId, setAddedWorkOrderId] = useState(null);
+
   const handleChange = (e) => {
     setWorkOrder({ ...workOrder, [e.target.name]: e.target.value });
   };
-  const [addedWorkOrderId, setAddedWorkOrderId] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +40,6 @@ function AddWorkOrder() {
       console.log('Work order added:', response.data);
       setAddedWorkOrderId(response.data.ID);
       setIsSubmitted(true);
-      // Reset form
       setWorkOrder({
         Issuer: '',
         Department: '',
@@ -59,17 +58,17 @@ function AddWorkOrder() {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <Header />
-      
-      <h2 className="text-2xl font-bold text-primary mb-6 text-center">Add Work Order</h2>
+
+      <h2 className="text-3xl font-bold text-primary mb-6 text-center">Add Work Order</h2>
       {isSubmitted && (
-  <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-    <strong className="font-bold">Success!</strong>
-    <span className="block sm:inline"> Work order has been added successfully.</span>
-    {addedWorkOrderId && (
-      <p className="mt-2">Work Order ID: {addedWorkOrderId}</p>
-    )}
-  </div>
-)}
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <strong className="font-bold">Success!</strong>
+          <span className="block sm:inline"> Work order has been added successfully.</span>
+          {addedWorkOrderId && (
+            <p className="mt-2">Work Order ID: {addedWorkOrderId}</p>
+          )}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -80,26 +79,26 @@ function AddWorkOrder() {
           className="w-full px-3 py-2 border rounded"
         />
         <input
-  type="text"
-  name="Department"
-  value={workOrder.Department}
-  onChange={handleChange}
-  placeholder="Addressed Department"
-  className="w-full px-3 py-2 mb-6 border rounded"
-/>
+          type="text"
+          name="Department"
+          value={workOrder.Department}
+          onChange={handleChange}
+          placeholder="Addressed Department"
+          className="w-full px-3 py-2 mb-6 border rounded"
+        />
 
-<label htmlFor="ImplementationDate" className="block mt-4 mb-2 font-semibold text-gray-700">
-  Implementation Date
-</label>
+        <label htmlFor="ImplementationDate" className="block mt-4 mb-2 font-semibold text-gray-700">
+          Implementation Date
+        </label>
 
-<input
-  id="ImplementationDate"
-  type="datetime-local"
-  name="ImplementationDate"
-  value={workOrder.ImplementationDate}
-  onChange={handleChange}
-  className="w-full px-3 py-2 border rounded"
-/>
+        <input
+          id="ImplementationDate"
+          type="datetime-local"
+          name="ImplementationDate"
+          value={workOrder.ImplementationDate}
+          onChange={handleChange}
+          className="w-full px-3 py-2 border rounded"
+        />
 
         <textarea
           name="Circular"
@@ -108,20 +107,26 @@ function AddWorkOrder() {
           placeholder="Circular Details"
           className="w-full px-3 py-2 border rounded"
         />
-        <button 
-  type="submit" 
-  className={`w-full px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white`}
-  disabled={isLoading}
->
-  {isLoading ? 'Adding...' : 'Add Work Order'}
-</button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className={`w-48 px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white flex items-center justify-center`}
+            disabled={isLoading}
+          >
+            <img src={`${process.env.PUBLIC_URL}/img/plus-whitepng.png`} alt="Add" className="w-5 h-5 mr-2" />
+            {isLoading ? 'Adding...' : 'Add Work Order'}
+          </button>
+        </div>
       </form>
-      <button 
-        onClick={handleBackToDashboard}
-        className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Admin Dashboard
-      </button>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
     </div>
   );
 }

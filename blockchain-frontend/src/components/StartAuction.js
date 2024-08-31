@@ -71,20 +71,26 @@ function StartAuction() {
           placeholder="Initial Bid Amount(in INR)"
           className="w-full px-3 py-2 border rounded"
         />
-        <button
-          type="submit"
-          className={`w-full px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white`}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Starting...' : 'Start Auction'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className={`w-48 px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white flex items-center justify-center`}
+            disabled={isLoading}
+          >
+            <img src={`${process.env.PUBLIC_URL}/img/law-white.png`} alt="Start" className="w-5 h-5 mr-2" />
+            {isLoading ? 'Starting...' : 'Start Auction'}
+          </button>
+        </div>
       </form>
-      <button
-        onClick={handleBackToDashboard}
-        className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Admin Dashboard
-      </button>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
     </div>
   );
 }

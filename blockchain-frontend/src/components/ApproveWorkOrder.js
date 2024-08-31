@@ -31,7 +31,6 @@ function ApproveWorkOrder() {
       setIsLoading(false);
     }
   };
-  
 
   const handleBackToDashboard = () => {
     navigate('/admin');
@@ -41,7 +40,7 @@ function ApproveWorkOrder() {
     <div className="max-w-2xl mx-auto p-6">
       <Header />
       <h2 className="text-2xl font-bold text-primary mb-6 text-center">Approve Work Order</h2>
-      
+     
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -69,13 +68,16 @@ function ApproveWorkOrder() {
           <option value="Rejected">Rejected</option>
           <option value="Postponed">Postponed</option>
         </select>
-        <button
-          type="submit"
-          className={`w-full px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white`}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Submitting...' : 'Approve Work Order'}
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className={`w-56 px-4 py-2 rounded ${isLoading ? 'bg-gray-400' : 'bg-primary hover:bg-secondary'} text-white flex items-center justify-center`}
+            disabled={isLoading}
+          >
+            <img src={`${process.env.PUBLIC_URL}/img/check-mark-white.png`} alt="Approve" className="w-5 h-5 mr-2" />
+            {isLoading ? 'Submitting...' : 'Approve Work Order'}
+          </button>
+        </div>
       </form>
 
       {message && (
@@ -84,12 +86,15 @@ function ApproveWorkOrder() {
         </div>
       )}
 
-      <button
-        onClick={handleBackToDashboard}
-        className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Admin Dashboard
-      </button>
+      <div className="flex justify-center mt-4">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
     </div>
   );
 }

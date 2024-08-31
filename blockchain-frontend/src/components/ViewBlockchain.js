@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 
-
 function ViewBlockchain() {
   const [blockchain, setBlockchain] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,13 +58,16 @@ function ViewBlockchain() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-    <Header />
-    <button 
-        onClick={handleBackToDashboard}
-        className="mt-6 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Admin Dashboard
-      </button>
+      <Header />
+      <div className="flex justify-center mt-6 mb-6">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
       <h2 className="text-2xl font-bold text-primary mb-6 text-center">Blockchain</h2>
       {blockchain.length === 0 ? (
         <p className="text-center">No blockchain data found.</p>
@@ -85,12 +87,15 @@ function ViewBlockchain() {
           ))}
         </div>
       )}
-      <button 
-        onClick={handleBackToDashboard}
-        className="mt-6 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Back to Admin Dashboard
-      </button>
+      <div className="flex justify-center mt-6">
+        <button
+          onClick={handleBackToDashboard}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center"
+        >
+          <img src={`${process.env.PUBLIC_URL}/img/back.png`} alt="Back" className="w-5 h-5 mr-2" />
+          Back to Admin Dashboard
+        </button>
+      </div>
     </div>
   );
 }

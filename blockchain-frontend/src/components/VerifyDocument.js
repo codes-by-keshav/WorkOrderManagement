@@ -15,7 +15,7 @@ function VerifyDocument() {
 
     try {
       const response = await axios.get(`http://localhost:8080/verify_${type}/${id}`);
-      
+
       // Simulate a delay
       setTimeout(() => {
         setResult(response.data);
@@ -49,9 +49,19 @@ function VerifyDocument() {
           onChange={(e) => setId(e.target.value)}
           className="w-full px-3 py-2 border rounded"
         />
-        <button type="submit" className="w-full bg-primary text-white px-4 py-2 rounded hover:bg-secondary" disabled={isVerifying}>
-          {isVerifying ? 'Verifying...' : 'Verify'}
-        </button>
+        <div className="flex justify-center">
+          <button type="submit" className="w-32 bg-primary text-white px-4 py-2 rounded flex items-center justify-center" disabled={isVerifying}>
+            {isVerifying ? (
+              'Verifying...'
+            ) : (
+              <>
+                <img src={`${process.env.PUBLIC_URL}/img/verify.png`} alt="Verify" className="w-5 h-5 mr-2" />
+                Verify
+              </>
+            )}
+          </button>
+        </div>
+
       </form>
       {isVerifying && (
         <div className="mt-8 p-4 bg-white rounded-lg shadow-md text-center">
