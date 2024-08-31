@@ -21,15 +21,15 @@ This project is a blockchain-based system for managing work orders, certificates
 ### Backend Setup
 
 1. Navigate to the backend directory:
-2. Run the Go server:
+2. Run the Go server  using : 'go run .'
 
 The server will start on `http://localhost:8080`.
 
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
-2. Install dependencies:
-3. Start the React app:
+2. Install dependencies using 'npm install'
+3. Start the React app using 'npm start'
 
 The app will be available at `http://localhost:3000`.
 
