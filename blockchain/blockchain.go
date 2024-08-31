@@ -128,6 +128,30 @@ func (bc *Blockchain) GetWorkOrder(id string) (*WorkOrder, error) {
 	}
 	return nil, fmt.Errorf("work order not found")
 }
+func (bc *Blockchain) UpdateWorkOrder(updatedWorkOrder WorkOrder) error {
+	for i, block := range bc.blocks {
+		var workOrder WorkOrder
+		err := json.Unmarshal(block.Data, &workOrder)
+		if err == nil && workOrder.ID == updatedWorkOrder.ID {
+			// Ensure we're not overwriting fields that shouldn't change
+			updatedWorkOrder.ID = workOrder.ID
+			updatedWorkOrder.Issuer = workOrder.Issuer
+			updatedWorkOrder.Department = workOrder.Department
+			updatedWorkOrder.Date = workOrder.Date
+			updatedWorkOrder.ImplementationDate = workOrder.ImplementationDate
+			updatedWorkOrder.Circular = workOrder.Circular
+
+			updatedWorkOrderData, err := json.Marshal(updatedWorkOrder)
+			if err != nil {
+				return err
+			}
+			newBlock := NewBlock(updatedWorkOrderData, bc.blocks[i-1].Hash)
+			bc.blocks[i] = newBlock
+			return nil
+		}
+	}
+	return fmt.Errorf("work order not found")
+}
 
 func (bc *Blockchain) AddCertificate(cert Certificate) error {
 
@@ -194,13 +218,24 @@ func (bc *Blockchain) ParticipateInAuction(bid Bid) error {
 
 func (bc *Blockchain) GetAllWorkOrders() []WorkOrder {
 	var workOrders []WorkOrder
+	seenIDs := make(map[string]bool)
 
-	for _, block := range bc.blocks {
+	// Iterate through the blocks in reverse order
+	for i := len(bc.blocks) - 1; i >= 0; i-- {
 		var workOrder WorkOrder
-		err := json.Unmarshal(block.Data, &workOrder)
+		err := json.Unmarshal(bc.blocks[i].Data, &workOrder)
 		if err == nil && workOrder.ID != "" {
-			workOrders = append(workOrders, workOrder)
+			if !seenIDs[workOrder.ID] {
+				workOrders = append(workOrders, workOrder)
+				seenIDs[workOrder.ID] = true
+			}
 		}
+	}
+
+	// Reverse the order of workOrders to maintain chronological order
+	for i := 0; i < len(workOrders)/2; i++ {
+		j := len(workOrders) - 1 - i
+		workOrders[i], workOrders[j] = workOrders[j], workOrders[i]
 	}
 
 	return workOrders

@@ -271,34 +271,52 @@ func approveWorkOrder(w http.ResponseWriter, r *http.Request) {
 
 	approval.Date = time.Now() // Set the approval date
 
-	workOrder.Approvals = append(workOrder.Approvals, approval)
-	if len(workOrder.Approvals) >= 2 && allApproved(workOrder.Approvals) {
-		workOrder.Status = "Approved"
+	// Check if the approval already exists
+	found := false
+	for i, existingApproval := range workOrder.Approvals {
+		if existingApproval.ApproverID == approval.ApproverID {
+			workOrder.Approvals[i] = approval
+			found = true
+			break
+		}
 	}
 
-	// Marshal the updated workOrder back to JSON
-	updatedWorkOrderData, err := json.Marshal(workOrder)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if !found {
+		workOrder.Approvals = append(workOrder.Approvals, approval)
 	}
 
-	// Add the updated work order to the blockchain
-	newID, err := blockchain.AddWorkOrder(updatedWorkOrderData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	// Update the overall status of the work order
+	workOrder.Status = updateWorkOrderStatus(workOrder.Approvals)
 
-	// Fetch the updated work order from the blockchain
-	updatedWorkOrder, err := blockchain.GetWorkOrder(newID)
+	// Update the work order in the blockchain
+	err = blockchain.UpdateWorkOrder(*workOrder)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(updatedWorkOrder)
+	json.NewEncoder(w).Encode(workOrder)
+}
+
+func updateWorkOrderStatus(approvals []Approval) string {
+	if len(approvals) == 0 {
+		return "Pending"
+	}
+
+	allApproved := true
+	for _, approval := range approvals {
+		if approval.Status != "Approved" {
+			allApproved = false
+			break
+		}
+	}
+
+	if allApproved {
+		return "Approved"
+	}
+
+	return "Pending"
 }
 
 func viewBlockchain(w http.ResponseWriter, r *http.Request) {
@@ -328,25 +346,17 @@ func viewBlockchain(w http.ResponseWriter, r *http.Request) {
 
 func viewWorkOrders(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Received a request to view work orders")
-	var workOrders []WorkOrder
-
-	for _, block := range blockchain.blocks {
-		var workOrder WorkOrder
-		err := json.Unmarshal(block.Data, &workOrder)
-		if err == nil && workOrder.ID != "" {
-			workOrders = append(workOrders, workOrder)
-		}
-	}
+	workOrders := blockchain.GetAllWorkOrders()
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(workOrders)
 }
 
-func allApproved(approvals []Approval) bool {
-	for _, approval := range approvals {
-		if approval.Status != "Approved" {
-			return false
-		}
-	}
-	return true
-}
+// func allApproved(approvals []Approval) bool {
+// 	for _, approval := range approvals {
+// 		if approval.Status != "Approved" {
+// 			return false
+// 		}
+// 	}
+// 	return true
+// }
