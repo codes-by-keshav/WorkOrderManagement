@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
 import Header from './Header';
 
 function AddCertificate() {
@@ -18,6 +19,64 @@ function AddCertificate() {
     setCertificate({ ...certificate, [e.target.name]: e.target.value });
   };
 
+  const generatePDF = (certificateData) => {
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px',
+      format: 'a4',
+    });
+
+    // Background color
+    doc.setFillColor(240, 240, 240);
+    doc.rect(0, 0, doc.internal.pageSize.width, doc.internal.pageSize.height, 'F');
+
+    // Header - College Name
+    doc.setFontSize(28);
+    doc.setTextColor(30, 144, 255);  // Dodger blue
+    doc.setFont('Helvetica', 'bold');
+    doc.text('XYZ College of Technology', doc.internal.pageSize.width / 2, 60, { align: 'center' });
+
+    // Subtitle - Certificate of Achievement
+    doc.setFontSize(22);
+    doc.setTextColor(0, 0, 0);  // Black
+    doc.setFont('Times', 'italic');
+    doc.text('Certificate of Achievement', doc.internal.pageSize.width / 2, 100, { align: 'center' });
+
+    // Recipient and details
+    doc.setFontSize(16);
+    doc.setFont('Helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.text(`This is to certify that`, doc.internal.pageSize.width / 2, 160, { align: 'center' });
+
+    // Recipient name
+    doc.setFontSize(20);
+    doc.setFont('Helvetica', 'bold');
+    doc.setTextColor(50, 50, 50);  // Dark gray
+    doc.text(certificateData.Recipient, doc.internal.pageSize.width / 2, 190, { align: 'center' });
+
+    // Details of the certification
+    doc.setFontSize(16);
+    doc.setFont('Helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.text(certificateData.Details, doc.internal.pageSize.width / 2, 230, { align: 'center' });
+
+    // Date
+    doc.setFontSize(14);
+    doc.text(`Date: ${new Date(certificateData.Date).toLocaleDateString()}`, doc.internal.pageSize.width - 150, 320);
+
+    // Issuer Signature Area
+    doc.setFontSize(16);
+    doc.text(`Issued by: ${certificateData.Issuer}`, 60, 320);
+
+    // Border
+    doc.setDrawColor(30, 144, 255); // Dodger blue
+    doc.setLineWidth(3);
+    doc.rect(30, 30, doc.internal.pageSize.width - 60, doc.internal.pageSize.height - 60);
+
+    // Save PDF
+    doc.save('certificate.pdf');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -26,6 +85,7 @@ function AddCertificate() {
       console.log('Certificate added:', response.data);
       setAddedCertificateId(response.data.ID);
       setIsSubmitted(true);
+      generatePDF(response.data);
       setCertificate({ Recipient: '', Issuer: '', Details: '' });
     } catch (error) {
       console.error('Error adding certificate:', error.response ? error.response.data : error.message);
