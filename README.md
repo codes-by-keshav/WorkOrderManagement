@@ -2,6 +2,12 @@
 
 This project is a blockchain-based system for managing work orders, certificates, and auctions. It consists of a Go backend and a React frontend.
 
+
+![UI preview1](https://github.com/user-attachments/assets/12d0b521-01be-45b1-9470-44d7258518b4)
+![UI preview2](https://github.com/user-attachments/assets/86a91de2-1a44-4c62-9ffd-1892b891e52f)
+![UI preview3](https://github.com/user-attachments/assets/588963aa-5665-4283-b7cc-f3d679771822)
+
+
 ## Features
 
 - Work order management
